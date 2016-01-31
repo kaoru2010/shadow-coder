@@ -1,4 +1,4 @@
-function exportFileToSVG(doc, dest) {
+function exportFileToSVG(doc, dest, saveMultipleArtboards) {
     var exportOptions = new ExportOptionsSVG();
     var type = ExportType.SVG;
     var fileSpec = new File(dest);
@@ -11,6 +11,12 @@ function exportFileToSVG(doc, dest) {
     exportOptions.fontSubsetting = SVGFontSubsetting.None; //GLYPHSUSED;
     exportOptions.sVGTextOnPath = true;
     exportOptions.sVGAutoKerning = false; //true;
+
+    if (saveMultipleArtboards) {
+        exportOptions.saveMultipleArtboards = true;
+        exportOptions.artboardRange = "";
+    }
+
     doc.exportFile( fileSpec, type, exportOptions );
 }
 
@@ -27,7 +33,11 @@ function exportFileToSVG(doc, dest) {
         svgPath = docPath.replace(/\.ai$/, ".svg");
         if (docPath == svgPath) return;
 
-        exportFileToSVG(doc, svgPath);
+        if (doc.artboards.length == 1) {
+            exportFileToSVG(doc, svgPath, false);
+        } else {
+            exportFileToSVG(doc, svgPath, true);
+        }
         doc.saveAs(new File(docPath));
     }
 })();
