@@ -2,9 +2,15 @@ function exportFileToSVG(doc, dest) {
     var exportOptions = new ExportOptionsSVG();
     var type = ExportType.SVG;
     var fileSpec = new File(dest);
+    exportOptions.DTD = SVGDTDVersion.SVG1_1; //SVGTINY1_2
+    //exportOptions.DTD = SVGDTDVersion.SVGTINY1_2;
+    exportOptions.documentEncoding = SVGDocumentEncoding.UTF8;
     exportOptions.embedRasterImages = true;
     exportOptions.embedAllFonts = false;
-    exportOptions.fontSubsetting = SVGFontSubsetting.GLYPHSUSED;
+    exportOptions.cssProperties = SVGCSSPropertyLocation.PRESENTATIONATTRIBUTES;
+    exportOptions.fontSubsetting = SVGFontSubsetting.None; //GLYPHSUSED;
+    exportOptions.sVGTextOnPath = true;
+    exportOptions.sVGAutoKerning = false; //true;
     doc.exportFile( fileSpec, type, exportOptions );
 }
 
