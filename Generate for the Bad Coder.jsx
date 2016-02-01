@@ -21,7 +21,7 @@ function exportFileToSVG(doc, dest, saveMultipleArtboards) {
 }
 
 (function() {
-    var i, doc, docPath, svgPath;
+    var i, doc, docPath, svgPath, svgDir;
 
     if (0 < app.documents.length) {
         doc = app.activeDocument;
@@ -32,6 +32,12 @@ function exportFileToSVG(doc, dest, saveMultipleArtboards) {
         docPath = doc.fullName.fsName;
         svgPath = docPath.replace(/\.ai$/, ".svg");
         if (docPath == svgPath) return;
+
+        svgPath = svgPath.replace('/documents/', '/hint_gen/');
+        svgDir = (new File(svgPath)).parent;
+        if ( !svgDir.exists) {
+            svgDir.create();
+        }
 
         if (doc.artboards.length == 1) {
             exportFileToSVG(doc, svgPath, false);
